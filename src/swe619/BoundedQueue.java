@@ -43,7 +43,7 @@ public class BoundedQueue<T> {
     //EFFECTS: if this is not full and argument passed in is not null, add element to this.
     //@throws if argument is null, throws IllegalArgumentException.
     //@throws if this is full, throws IllegalStateException.
-    public void putAll(Iterable<T> all, int allCapacity) {
+    public void putAll(Iterable<? extends T> all, int allCapacity) {
         if((capacity-rep.size()) < allCapacity) throw new IllegalStateException();
         if(isFull()) throw new IllegalStateException();
         for (T e : all) {
