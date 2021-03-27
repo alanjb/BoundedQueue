@@ -48,12 +48,12 @@ public class BoundedQueueTest {
     @Test
     public void putAll_works(){
         BoundedQueue<Number> b = new BoundedQueue<>(5);
-        List<Double> integers = new ArrayList<>(3);
-        integers.add(1.0);
-        integers.add(3.2);
-        integers.add(2.1);
+        List<Double> doubles = new ArrayList<>(3);
+        doubles.add(1.0);
+        doubles.add(3.2);
+        doubles.add(2.1);
 
-        b.putAll(integers, integers.size());
+        b.putAll(doubles);
         assertEquals(1.0, b.get());
         assertEquals(3.2, b.get());
         assertEquals(2.1, b.get());
@@ -67,7 +67,7 @@ public class BoundedQueueTest {
         integers.add(2.0);
         integers.add(3.0);
 
-        b.putAll(integers, integers.size());
-        assertEquals(integers, b.getAll(integers.size()));
+        b.putAll(integers);
+        assertEquals(integers, b.getAll());
     }
 }

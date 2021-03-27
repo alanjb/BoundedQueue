@@ -1,6 +1,7 @@
 package swe619;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 //Client invariant: BoundedQueue objects can never of size less than 0.
@@ -11,12 +12,12 @@ public class BoundedQueue<T> {
     //Rep Invariant:    rep is not null.
     //                  capacity is not less than 0.
 
-    //POST: @throw IllegalArgumentException if argument is less than 0.
+    //POST: @throw IllegalArgumentException if capacity is less than 0.
     //POST: creates a BoundedQueue with a bounded (finite size) capacity.
     public BoundedQueue(int capacity) {
         if(capacity < 0) throw new IllegalArgumentException();
         this.capacity = capacity;
-        rep = new ArrayList<>(capacity);
+        rep = new ArrayList<>(capacity); //rep is never null
     }
 
     //POST: @return true if size of this is equal to 0.
@@ -47,22 +48,11 @@ public class BoundedQueue<T> {
     //POST: @throw IllegalStateException if the available space in this is less than the capacity of all.
     //POST: @throw IllegalStateException if this is full.
     //POST: add all to this.
-    public void putAll(Iterable<? extends T> all, int allCapacity) {
-        if(((capacity-rep.size()) < allCapacity) || isFull()) throw new IllegalStateException();
+    public void putAll(Collection<? extends T> all) {
+        if(((capacity-rep.size()) < all.size()) || isFull()) throw new IllegalStateException();
         for (T element : all) {
             put(element);
         }
-    }
-
-    //POST: @throw IllegalStateException if this is empty.
-    //POST: @return all elements of this.
-    public List<T> getAll(int size){
-        if(isEmpty()) throw new IllegalStateException();
-        List<T> returnRep = new ArrayList<>(capacity);
-        for(int i=0; i<size; i++){
-            returnRep.add(get());
-        }
-        return returnRep;
     }
 
     //POST: @throw IllegalStateException if this is empty.
@@ -75,5 +65,15 @@ public class BoundedQueue<T> {
         }
         rep.remove(rep.size()-1);
         return result;
+    }
+
+    //POST: @throw IllegalStateException if this is empty.
+    //POST: @return all elements of this.
+    public List<T> getAll(){
+        List<T> dst = new ArrayList<>(capacity);
+        while (!isEmpty()){
+            dst.add(get());
+        }
+        return dst;
     }
 }
