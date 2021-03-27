@@ -11,7 +11,7 @@ public class BoundedQueue<T> {
     //Rep Invariant:    rep is not null.
     //                  capacity is not less than 0.
 
-    //POST: @throws IllegalArgumentException if argument is less than 0.
+    //POST: @throw IllegalArgumentException if argument is less than 0.
     //POST: creates a BoundedQueue with a bounded (finite size) capacity.
     public BoundedQueue(int capacity) {
         if(capacity < 0) throw new IllegalArgumentException();
@@ -34,18 +34,18 @@ public class BoundedQueue<T> {
         return rep.size();
     }
 
-    //POST: @throws NPE if element is null.
-    //POST: @throws ISE if this is full.
-    //POST: @throws ISE if capacity of this is 0.
-    //POST: adds element to this.
+    //POST: @throw NPE if element is null.
+    //POST: @throw ISE if this is full.
+    //POST: @throw ISE if capacity of this is 0.
+    //POST: add element to this.
     public void put(T element) {
         if(element == null) throw new NullPointerException();
         if(isFull()) throw new IllegalStateException();
         rep.add(element);
     }
 
-    //POST: @throws IllegalStateException if the available space in this is less than the capacity of all.
-    //POST: @throws IllegalStateException if this is full.
+    //POST: @throw IllegalStateException if the available space in this is less than the capacity of all.
+    //POST: @throw IllegalStateException if this is full.
     //POST: add all to this.
     public void putAll(Iterable<? extends T> all, int allCapacity) {
         if(((capacity-rep.size()) < allCapacity) || isFull()) throw new IllegalStateException();
@@ -54,8 +54,8 @@ public class BoundedQueue<T> {
         }
     }
 
-    //POST: @throws IllegalStateException if this is empty.
-    //POST: @returns all elements of this.
+    //POST: @throw IllegalStateException if this is empty.
+    //POST: @return all elements of this.
     public List<T> getAll(int size){
         if(isEmpty()) throw new IllegalStateException();
         List<T> returnRep = new ArrayList<>(capacity);
@@ -65,8 +65,8 @@ public class BoundedQueue<T> {
         return returnRep;
     }
 
-    //POST: @throws IllegalStateException if this is empty.
-    //POST: @returns the head of this.
+    //POST: @throw IllegalStateException if this is empty.
+    //POST: @return the head of this.
     public T get() {
         if(isEmpty()) throw new IllegalStateException();
         T result = rep.get(0);
