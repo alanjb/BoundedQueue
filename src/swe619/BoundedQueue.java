@@ -3,56 +3,72 @@ package swe619;
 import java.util.ArrayList;
 import java.util.List;
 
+//Client invariant: BoundedQueue objects can never of size less than 0.
 public class BoundedQueue<T> {
-
     protected List<T> rep;
-    protected int capacity = 0;
+    protected int capacity;
 
-    //EFFECTS: instantiates a new BoundedQueue with specified capacity.
-    //@throws if argument is less than or equal to 0, throws IllegalArgumentException.
+    //Rep Invariant:    rep is not null.
+    //                  capacity is not less than 0.
+
+    //POST: @throws IllegalArgumentException if argument is less than 0.
+    //POST: creates a BoundedQueue with a bounded (finite size) capacity.
     public BoundedQueue(int capacity) {
-        if(capacity <= 0) throw new IllegalArgumentException();
+        if(capacity < 0) throw new IllegalArgumentException();
         this.capacity = capacity;
         rep = new ArrayList<>(capacity);
     }
 
-    //EFFECTS: return true if size of this is equal to 0.
+    //POST: return true if size of this is equal to 0.
     public boolean isEmpty() {
         return (rep.size() == 0);
     }
 
-    //EFFECTS: return true if size of this is equal to capacity of this.
+    //POST: return true if size of this is equal to capacity of this.
     public boolean isFull() {
         return (rep.size() == capacity);
     }
 
-    //EFFECTS: return number of elements in this.
+    //POST: return number of elements in this.
     public int getCount() {
         return rep.size();
     }
 
-    //EFFECTS: if this is not full and argument passed in is not null, add element to this.
-    //@throws if argument is null, throws IllegalArgumentException.
-    //@throws if this is full, throws IllegalStateException.
-    public void put(T e) {
-        if(e == null) throw new IllegalArgumentException();
+    //POST: @throws NPE if element is null.
+    //POST: @throws ISE if this is full.
+    //POST: @throws ISE if capacity of this is 0.
+    //POST: adds element to this.
+    public void put(T element) {
+        if(element == null) throw new NullPointerException();
         if(isFull()) throw new IllegalStateException();
-        rep.add(e);
+        rep.add(element);
     }
 
-    //EFFECTS: if this is not full and argument passed in is not null, add element to this.
-    //@throws if argument is null, throws IllegalArgumentException.
-    //@throws if this is full, throws IllegalStateException.
+    //POST: @throws IllegalStateException if the available space in this is less than the capacity of all.
+    //POST: @throws IllegalStateException if this is full.
+    //POST: add all to this.
     public void putAll(Iterable<? extends T> all, int allCapacity) {
-        if((capacity-rep.size()) < allCapacity) throw new IllegalStateException();
-        if(isFull()) throw new IllegalStateException();
-        for (T e : all) {
-            put(e);
+        if(((capacity-rep.size()) < allCapacity) || isFull()) throw new IllegalStateException();
+        for (T element : all) {
+            put(element);
         }
     }
 
-    //EFFECTS: if this is not empty and element passed in is not null, add element to BoundedQueue.
-    //@throws if this is empty, throws IllegalStateException.
+    //POST: @throws IllegalStateException if this is empty.
+    //POST: @returns all elements of this.
+    public List<T> getAll(int size){
+        if(isEmpty()) throw new IllegalStateException();
+        List<T> returnRep = new ArrayList<>(capacity);
+
+        for(int i=0; i<size; i++){
+            returnRep.add(get());
+        }
+
+        return returnRep;
+    }
+
+    //POST: @throws IllegalStateException if this is empty.
+    //POST: @returns the head of this.
     public T get() {
         if(isEmpty()) throw new IllegalStateException();
         T result = rep.get(0);
