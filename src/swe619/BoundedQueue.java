@@ -19,17 +19,17 @@ public class BoundedQueue<T> {
         rep = new ArrayList<>(capacity);
     }
 
-    //POST: return true if size of this is equal to 0.
+    //POST: @return true if size of this is equal to 0.
     public boolean isEmpty() {
         return (rep.size() == 0);
     }
 
-    //POST: return true if size of this is equal to capacity of this.
+    //POST: @return true if size of this is equal to capacity of this.
     public boolean isFull() {
         return (rep.size() == capacity);
     }
 
-    //POST: return number of elements in this.
+    //POST: @return number of elements in this.
     public int getCount() {
         return rep.size();
     }
@@ -59,11 +59,9 @@ public class BoundedQueue<T> {
     public List<T> getAll(int size){
         if(isEmpty()) throw new IllegalStateException();
         List<T> returnRep = new ArrayList<>(capacity);
-
         for(int i=0; i<size; i++){
             returnRep.add(get());
         }
-
         return returnRep;
     }
 

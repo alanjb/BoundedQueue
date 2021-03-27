@@ -2,7 +2,9 @@ import org.junit.Test;
 import swe619.BoundedQueue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,17 +47,27 @@ public class BoundedQueueTest {
 
     @Test
     public void putAll_works(){
-        BoundedQueue<Integer> b = new BoundedQueue<>(5);
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
+        BoundedQueue<Number> b = new BoundedQueue<>(5);
+        List<Double> integers = new ArrayList<>(3);
+        integers.add(1.0);
+        integers.add(3.2);
+        integers.add(2.1);
 
-        b.putAll(list, list.size());
-        assertEquals(1, (int) b.get());
-        assertEquals(2, (int) b.get());
-        assertEquals(3, (int) b.get());
-        assertEquals(4, (int) b.get());
+        b.putAll(integers, integers.size());
+        assertEquals(1.0, b.get());
+        assertEquals(3.2, b.get());
+        assertEquals(2.1, b.get());
+    }
+
+    @Test
+    public void getAll_works(){
+        BoundedQueue<Number> b = new BoundedQueue<>(5);
+        List<Double> integers = new ArrayList<>(3);
+        integers.add(1.0);
+        integers.add(2.0);
+        integers.add(3.0);
+
+        b.putAll(integers, integers.size());
+        assertEquals(integers, b.getAll(integers.size()));
     }
 }
